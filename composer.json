@@ -1,0 +1,23 @@
+{
+    "name": "rebuy/php-tools",
+    "description" : "PHP* Toolsuite",
+    "config": {
+        "bin-dir": "bin"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://composer.rebuy.de"
+        },
+        {
+            "type": "vcs",
+            "url": "git@github.com:Ocramius/phpcpd.git"
+        }
+    ],
+    "require": {
+        "squizlabs/php_codesniffer": "1.*",
+        "phpmd/phpmd": "1.4.*",
+        "sebastian/phpcpd": "dev-feature/composer-support"
+    },
+    "minimum-stability": "dev"
+}

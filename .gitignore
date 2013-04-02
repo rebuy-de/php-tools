@@ -1,0 +1,13 @@
+/Entity/Proxy/*.php
+/shared
+config/local.ini
+/nbproject
+.idea/
+.DS_Store
+*.orig
+.buildpath
+.project
+.settings/*
+vendor/
+bin/
+library/*
