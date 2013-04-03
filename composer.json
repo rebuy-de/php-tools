@@ -4,6 +4,11 @@
     "config": {
         "bin-dir": "bin"
     },
+    "bin": [
+        "bin/rebuy-phpcpd",
+        "bin/rebuy-phpcs",
+        "bin/rebuy-phpmd"
+    ],
     "repositories": [
         {
             "type": "composer",

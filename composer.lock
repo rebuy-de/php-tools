@@ -1,5 +1,5 @@
 {
-    "hash": "678a46a3f01afd91ff42ee524878c490",
+    "hash": "51642b4198cce6a923e5276687cb6565",
     "packages": [
         {
             "name": "pdepend/pdepend",
@@ -263,12 +263,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Finder.git",
-                "reference": "a066c83f57c82ce49b5abc6343a43c132f771c24"
+                "reference": "af17e4675a38c26c04772c42864f9d0659e3d6de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Finder/zipball/a066c83f57c82ce49b5abc6343a43c132f771c24",
-                "reference": "a066c83f57c82ce49b5abc6343a43c132f771c24",
+                "url": "https://api.github.com/repos/symfony/Finder/zipball/af17e4675a38c26c04772c42864f9d0659e3d6de",
+                "reference": "af17e4675a38c26c04772c42864f9d0659e3d6de",
                 "shasum": ""
             },
             "require": {
@@ -301,7 +301,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "http://symfony.com",
-            "time": "2013-03-23 07:42:25"
+            "time": "2013-04-01 08:07:30"
         },
         {
             "name": "theseer/fdomdocument",
