@@ -9,5 +9,6 @@ config/local.ini
 .project
 .settings/*
 vendor/
-bin/
+bin/php*
+bin/pdepend
 library/*
