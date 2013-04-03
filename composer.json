@@ -13,13 +13,14 @@
         {
             "type": "composer",
             "url": "https://composer.rebuy.de"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:Ocramius/phpcpd.git"
         }
     ],
     "require": {
+        "phpunit/phpunit": "3.7.*",
+        "phpunit/php-invoker": "1.*",
+        "phpunit/dbunit": "1.2.*",
+        "phpunit/phpunit-selenium": "1.2.*",
+        "phpunit/phpunit-story": "1.0.*",
         "squizlabs/php_codesniffer": "1.*",
         "phpmd/phpmd": "1.4.*",
         "sebastian/phpcpd": "dev-feature/composer-support"
