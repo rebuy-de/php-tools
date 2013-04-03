@@ -10,5 +10,6 @@ config/local.ini
 .settings/*
 vendor/
 bin/php*
+bin/dbunit*
 bin/pdepend
 library/*

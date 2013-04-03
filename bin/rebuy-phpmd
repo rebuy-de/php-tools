@@ -7,6 +7,7 @@ elif [ $1 == "-h" ] ; then
     echo $"Usage: $0 <paths to files or directories>"
     exit 0
 else 
-    ./phpmd $1 text ../config/phpmd/ruleset.xml --exclude library,vendor,bin,config,data,deployment,htdocs,shared,Tests
+    DIR="$(cd "$(dirname "$0")" && pwd)"
+    $DIR/phpmd $1 text $DIR/../config/phpmd/ruleset.xml --exclude library,vendor,bin,config,data,deployment,htdocs,shared,Tests
     exit 0 
 fi

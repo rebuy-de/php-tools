@@ -7,6 +7,7 @@ elif [ $1 == "-h" ] ; then
     echo $"Usage: $0 <paths to files or directories>"
     exit 0
 else 
-    ./phpcpd --min-lines 2 --exclude vendor --exclude library  --progress $1
+    DIR="$(cd "$(dirname "$0")" && pwd)"
+    $DIR/phpcpd --min-lines 2 --exclude vendor --exclude library  --progress $1
     exit 0 
 fi
