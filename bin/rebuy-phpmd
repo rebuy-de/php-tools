@@ -6,8 +6,17 @@ if [ $# -eq 0 ] ; then
 elif [ $1 == "-h" ] ; then
     echo $"Usage: $0 <paths to files or directories>"
     exit 0
-else 
-    DIR="$(cd "$(dirname "$0")" && pwd)"
-    $DIR/phpmd $1 text $DIR/../config/phpmd/ruleset.xml --exclude library,vendor,bin,config,data,deployment,htdocs,shared,Tests
-    exit 0 
+else
+    BINDIR="$(cd "$(dirname "$0")" && pwd)"
+
+    SOURCE="${BASH_SOURCE[0]}"
+    while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+      REALDIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+      SOURCE="$(readlink "$SOURCE")"
+      [[ $SOURCE != /* ]] && SOURCE="$REALDIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+    done
+    REALDIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
+    $BINDIR/phpmd $1 text $REALDIR/../config/phpmd/ruleset.xml --exclude library,vendor,bin,config,data,deployment,htdocs,shared,Tests
+    exit 0
 fi

@@ -6,8 +6,17 @@ if [ $# -eq 0 ] ; then
 elif [ $1 == "-h" ] ; then
     echo $"Usage: $0 <paths to files or directories>"
     exit 0
-else 
-    DIR="$(cd "$(dirname "$0")" && pwd)"
-    $DIR/phpcs -v --ignore=*/library/*,*/vendor/*,*/bin/*,*/config/*,*/data/*,*/deployment/*,*/htdocs/*,*/shared/*  --encoding=utf-8 --standard=$DIR/../config/phpcs/Rebuy --extensions=php,inc,phtml $1
-    exit 0 
+else
+    BINDIR="$(cd "$(dirname "$0")" && pwd)"
+
+    SOURCE="${BASH_SOURCE[0]}"
+    while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+      REALDIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+      SOURCE="$(readlink "$SOURCE")"
+      [[ $SOURCE != /* ]] && SOURCE="$REALDIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+    done
+    REALDIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
+    $BINDIR/phpcs -v --ignore=*/library/*,*/vendor/*,*/bin/*,*/config/*,*/data/*,*/deployment/*,*/htdocs/*,*/shared/*  --encoding=utf-8 --standard=$REALDIR/../config/phpcs/Rebuy/ruleset.xml --extensions=php,inc,phtml $1
+    exit 0
 fi
