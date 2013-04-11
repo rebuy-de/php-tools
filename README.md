@@ -5,12 +5,14 @@
 Contains scripts and configurations for:
 
 * ~~PHPCPD~~  
-  ~~bin/rebuy-phpcpd~~
+  ~~bin/rebuy-phpcpd~~  
   Until phpcpd expects dev as minimum stability it will be not added.
 * PHPCS  
   bin/rebuy-phpcs
 * PHPMD  
   bin/rebuy-phpmd
+* phpunit + selenium + story
+* dbunit
 
 ## Installation
 
