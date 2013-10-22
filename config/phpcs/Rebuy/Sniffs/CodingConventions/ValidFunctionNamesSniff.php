@@ -49,9 +49,11 @@ class Rebuy_Sniffs_CodingConventions_ValidFunctionNamesSniff implements PHP_Code
         }
 
         if (strpos($token['content'], '_') !== false) {
-            $error = 'Method "%s" must not contain a underscore even if declared non-public.';
-            $data  = array($token['content']);
-            $phpcsFile->addError($error, $stackPtr, 'underscore', $data);
+            if (!$this->hasTestAnnotation($tokens, $stackPtr)) {
+                $error = 'Method "%s" must not contain a underscore even if declared non-public.';
+                $data  = array($token['content']);
+                $phpcsFile->addError($error, $stackPtr, 'underscore', $data);
+            }
         }
 
         if ($after['type'] == 'T_WHITESPACE') {
@@ -59,5 +61,20 @@ class Rebuy_Sniffs_CodingConventions_ValidFunctionNamesSniff implements PHP_Code
             $data  = array($token['content']);
             $phpcsFile->addError($error, $stackPtr, 'whitespace', $data);
         }
+    }
+
+
+    /**
+     * @param array $tokens
+     * @param int $stackPtr
+     * @return bool
+     */
+    private function hasTestAnnotation(array $tokens, $stackPtr) {
+        for ($i = $stackPtr - 1; $i >= 0 && $tokens[$i]['type'] !== 'T_FUNCTION'; $i -= 1) {
+            if ($tokens[$i]['type'] === 'T_DOC_COMMENT' && strpos($tokens[$i]['content'], '@test') !== false) {
+                return true;
+            }
+        }
+        return false;
     }
 }
