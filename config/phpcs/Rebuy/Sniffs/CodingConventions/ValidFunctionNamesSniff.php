@@ -63,6 +63,30 @@ class Rebuy_Sniffs_CodingConventions_ValidFunctionNamesSniff implements PHP_Code
         }
     }
 
+    /**
+     * @param array $tokens
+     * @param int $stackPtr has to point to a function token
+     * @return string
+     * @throws InvalidArgumentException
+     */
+    private function getDocblockForFunction(array $tokens, $stackPtr) {
+        if ($tokens[$stackPtr]['type'] !== 'T_FUNCTION') {
+            throw new InvalidArgumentException('stack pointer must point on function on tokens array!');
+        }
+
+        $result = [];
+        for ($i = $stackPtr - 1; $i >= 0 && $this->isTokenNotYetPreviousEntity($tokens[$stackPtr]); $i -= 1) {
+            if ($tokens[$i]['type'] === 'T_DOC_COMMENT') {
+                array_unshift($result, $tokens[$i]['content']);
+            }
+        }
+        $result = array_reverse($result, false);
+        return implode('', $result);
+    }
+
+    private function isTokenNotYetPreviousEntity($token) {
+        return in_array($token['type'], [T_DOC_COMMENT, T_WHITESPACE, T_ABSTRACT, T_PRIVATE, T_PUBLIC, T_PROTECTED, T_STATIC], true);
+    }
 
     /**
      * @param array $tokens
@@ -70,11 +94,6 @@ class Rebuy_Sniffs_CodingConventions_ValidFunctionNamesSniff implements PHP_Code
      * @return bool
      */
     private function hasTestAnnotation(array $tokens, $stackPtr) {
-        for ($i = $stackPtr - 1; $i >= 0 && $tokens[$i]['type'] !== 'T_FUNCTION'; $i -= 1) {
-            if ($tokens[$i]['type'] === 'T_DOC_COMMENT' && strpos($tokens[$i]['content'], '@test') !== false) {
-                return true;
-            }
-        }
-        return false;
+        return strpos($this->getDocblockForFunction($tokens, $stackPtr), '@test') !== false;
     }
 }
