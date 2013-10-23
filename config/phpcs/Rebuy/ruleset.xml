@@ -15,6 +15,7 @@
     <rule ref="Squiz.Functions.GlobalFunction"/>
     <rule ref="Zend.Debug.CodeAnalyzer"/>
     <rule ref="Zend.Files.ClosingTag"/>
+    <rule ref="PSR2.Files.EndFileNewline"/>
 
     <rule ref="Rebuy.CodingConventions.ArithmeticTokensSurroundedBySpaces"/>
     <rule ref="Rebuy.CodingConventions.AssignmentTokensSurroundedBySpaces"/>
