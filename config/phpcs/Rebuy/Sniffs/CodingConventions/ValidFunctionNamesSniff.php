@@ -65,18 +65,28 @@ class Rebuy_Sniffs_CodingConventions_ValidFunctionNamesSniff implements PHP_Code
 
     /**
      * @param array $tokens
+     * @param int $stackPtr
+     * @return bool
+     */
+    private function hasTestAnnotation(array $tokens, $stackPtr) {
+        return strpos($this->getDocblockForFunction($tokens, $stackPtr), '@test') !== false;
+    }
+
+    /**
+     * @param array $tokens
      * @param int $stackPtr has to point to a function token
      * @return string
      * @throws InvalidArgumentException
      */
     private function getDocblockForFunction(array $tokens, $stackPtr) {
-        if ($tokens[$stackPtr]['type'] !== 'T_FUNCTION') {
+        if ($tokens[$stackPtr]['code'] !== T_FUNCTION) {
             throw new InvalidArgumentException('stack pointer must point on function on tokens array!');
         }
 
         $result = [];
-        for ($i = $stackPtr - 1; $i >= 0 && $this->isTokenNotYetPreviousEntity($tokens[$stackPtr]); $i -= 1) {
-            if ($tokens[$i]['type'] === 'T_DOC_COMMENT') {
+
+        for ($i = $stackPtr - 1; $i >= 0 && $this->isTokenNotYetPreviousEntity($tokens[$i]); $i -= 1) {
+            if ($tokens[$i]['code'] === T_DOC_COMMENT) {
                 array_unshift($result, $tokens[$i]['content']);
             }
         }
@@ -85,15 +95,7 @@ class Rebuy_Sniffs_CodingConventions_ValidFunctionNamesSniff implements PHP_Code
     }
 
     private function isTokenNotYetPreviousEntity($token) {
-        return in_array($token['type'], [T_DOC_COMMENT, T_WHITESPACE, T_ABSTRACT, T_PRIVATE, T_PUBLIC, T_PROTECTED, T_STATIC], true);
+        return in_array($token['code'], [T_DOC_COMMENT, T_WHITESPACE, T_ABSTRACT, T_PRIVATE, T_PUBLIC, T_PROTECTED, T_STATIC], true);
     }
 
-    /**
-     * @param array $tokens
-     * @param int $stackPtr
-     * @return bool
-     */
-    private function hasTestAnnotation(array $tokens, $stackPtr) {
-        return strpos($this->getDocblockForFunction($tokens, $stackPtr), '@test') !== false;
-    }
 }
