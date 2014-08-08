@@ -68,9 +68,12 @@ class Rebuy_Sniffs_CodingConventions_ValidVariableNameSniff extends PHP_CodeSnif
                     }
 
                     if (PHP_CodeSniffer::isCamelCaps($objVarName, false, true, false) === false) {
-                        $error = 'Variable "%s" is not in valid camel caps format';
-                        $data  = array($originalVarName);
-                        $phpcsFile->addError($error, $var, 'NotCamelCaps', $data);
+                        // allow accessing properties that are named like MySQL columns 
+                        if (!preg_match('/^[a-z][a-z0-9_]*$/', $objVarName)) {
+                                $error = 'Variable "%s" is not in valid camel caps format';
+                                $data = array($originalVarName);
+                                $phpcsFile->addError($error, $var, 'NotCamelCaps', $data);
+			}
                     }
                 }//end if
             }//end if
