@@ -69,7 +69,8 @@ class Rebuy_Sniffs_CodingConventions_ValidFunctionNamesSniff implements PHP_Code
      * @return bool
      */
     private function hasTestAnnotation(array $tokens, $stackPtr) {
-        return strpos($this->getDocblockForFunction($tokens, $stackPtr), '@test') !== false;
+        $docblock = $this->getDocblockForFunction($tokens, $stackPtr);
+        return strpos($docblock, '@test') !== false;
     }
 
     /**
@@ -83,19 +84,39 @@ class Rebuy_Sniffs_CodingConventions_ValidFunctionNamesSniff implements PHP_Code
             throw new InvalidArgumentException('stack pointer must point on function on tokens array!');
         }
 
-        $result = [];
+        $phpdocBlock = [];
+        $phpdocStackPtr = $this->getStackpointerWherePhpdocShouldBe($tokens, $stackPtr);
 
-        for ($i = $stackPtr - 1; $i >= 0 && $this->isTokenNotYetPreviousEntity($tokens[$i]); $i -= 1) {
-            if ($tokens[$i]['code'] === T_DOC_COMMENT) {
-                array_unshift($result, $tokens[$i]['content']);
-            }
+        while ($tokens[$phpdocStackPtr]['code'] === T_DOC_COMMENT) {
+            array_unshift($phpdocBlock, $tokens[$phpdocStackPtr]['content']);
+            $phpdocStackPtr--;
         }
-        $result = array_reverse($result, false);
-        return implode('', $result);
+
+        return implode('', $phpdocBlock);
     }
 
-    private function isTokenNotYetPreviousEntity($token) {
-        return in_array($token['code'], [T_DOC_COMMENT, T_WHITESPACE, T_ABSTRACT, T_PRIVATE, T_PUBLIC, T_PROTECTED, T_STATIC], true);
+    /**
+     * @param array $tokens
+     * @param int $stackPtrOfFunctionToken
+     *
+     * @return int
+     */
+    private function getStackpointerWherePhpdocShouldBe(array $tokens, $stackPtrOfFunctionToken)
+    {
+        $currentStackPointer = $stackPtrOfFunctionToken - 1;
+        while (
+            isset($tokens[$currentStackPointer]) &&
+            in_array($tokens[$currentStackPointer]['code'], $this->getTokenTypesBetweenFunctionAndDocblock(), true)
+        ) {
+            $currentStackPointer--;
+        }
+        return $currentStackPointer;
     }
 
+    /**
+     * @return int[]
+     */
+    private function getTokenTypesBetweenFunctionAndDocblock() {
+        return [T_WHITESPACE, T_ABSTRACT, T_PRIVATE, T_PUBLIC, T_PROTECTED, T_STATIC];
+    }
 }
